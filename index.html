@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Just a Script</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #f5f5f5;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup-content {
+      background: white;
+      padding: 20px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      text-align: center;
+      font-size: 18px;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.8); }
+    }
+
+    #mensagem-apos-popup {
+      margin-top: 30px;
+      font-size: 22px;
+      color: #333;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bem vindo ao site oficial do Santo Ofício!</h1>
+  <input type="text" id="nome" placeholder="Digite seu nome" />
+  <button onclick="mostrarMensagem()">Enviar</button>
+
+  <div id="popup" class="popup">
+    <div id="popup-content" class="popup-content">
+      <p id="popup-text"></p>
+    </div>
+  </div>
+
+  <div id="mensagem-apos-popup"></div>
+
+  <script>
+    function mostrarMensagem() {
+      const nome = document.getElementById("nome").value.trim();
+      const popup = document.getElementById("popup");
+      const popupText = document.getElementById("popup-text");
+      const popupContent = document.getElementById("popup-content");
+      const mensagemAposPopup = document.getElementById("mensagem-apos-popup");
+
+      // Normaliza para ignorar acentos e maiúsculas/minúsculas
+      const nomeNormalizado = nome.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+      if (nome) {
+        if (nomeNormalizado === "anthony" || nomeNormalizado === "antony") {
+          popupText.textContent = `${nome} está salvo`;
+        } else {
+          popupText.textContent = `Olá, ${nome}! Você é um herege.`;
+        }
+        console.log(`O usuário digitou: ${nome}`);
+      } else {
+        popupText.textContent = "Você não digitou um nome!";
+      }
+
+      mensagemAposPopup.textContent = "";
+
+      popup.style.display = "flex";
+      popupContent.style.animation = "fadeIn 0.9s ease forwards";
+
+      setTimeout(() => {
+        popupContent.style.animation = "fadeOut 0.9s ease forwards";
+        setTimeout(() => {
+          popup.style.display = "none";
+
+          if (nome) {
+            if (nomeNormalizado === "anthony" || nomeNormalizado === "antony") {
+              mensagemAposPopup.textContent = "Deo gratias!";
+            } else {
+              mensagemAposPopup.textContent = "Converta-se.";
+            }
+          } else {
+            mensagemAposPopup.textContent = "";
+          }
+        }, 900);
+      }, 3200);
+    }
+
+    document.getElementById("nome").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        mostrarMensagem();
+      }
+    });
+  </script>
+</body>
+</html>
